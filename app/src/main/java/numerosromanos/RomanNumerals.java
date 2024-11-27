@@ -3,58 +3,54 @@ package numerosromanos;
 public class RomanNumerals {
 
     public String toRoman(int decimalValue) {
-        if (!checkValidEntry(decimalValue)) {
-            throw new IllegalArgumentException("Invalid input");
-        }
-        return convertEntryToRoman(decimalValue);
+        validateInput(decimalValue);
+        return convertToRoman(decimalValue);
     }
 
-    private String convertEntryToRoman(int decimalValue) {
-        String romanRepresentation = "";
-        while (true) {
-            if (decimalValue >= 1000) {
-                romanRepresentation += getRomanEquivalent(1000);
-                decimalValue -= 1000;
-            } else if (decimalValue >= 900) {
-                romanRepresentation += getRomanEquivalent(900);
-                decimalValue -= 900;
-            } else if (decimalValue >= 500) {
-                romanRepresentation += getRomanEquivalent(500);
-                decimalValue -= 500;
-            } else if (decimalValue >= 400) {
-                romanRepresentation += getRomanEquivalent(400);
-                decimalValue -= 400;
-            } else if (decimalValue >= 100) {
-                romanRepresentation += getRomanEquivalent(100);
-                decimalValue -= 100;
-            } else if (decimalValue >= 90) {
-                romanRepresentation += getRomanEquivalent(90);
-                decimalValue -= 90;
-            } else if (decimalValue >= 50) {
-                romanRepresentation += getRomanEquivalent(50);
-                decimalValue -= 50;
-            } else if (decimalValue >= 40) {
-                romanRepresentation += getRomanEquivalent(40);
-                decimalValue -= 40;
-            } else if (decimalValue >= 10) {
-                romanRepresentation += getRomanEquivalent(10);
-                decimalValue -= 10;
-            } else if (decimalValue >= 9) {
-                romanRepresentation += getRomanEquivalent(9);
-                decimalValue -= 9;
-            } else if (decimalValue >= 5) {
-                romanRepresentation += getRomanEquivalent(5);
-                decimalValue -= 5;
-            } else if (decimalValue >= 4) {
-                romanRepresentation += getRomanEquivalent(4);
-                decimalValue -= 4;
-            } else if (decimalValue >= 1) {
-                romanRepresentation += getRomanEquivalent(1);
-                decimalValue -= 1;
-            } else {
-                return romanRepresentation;
-            }
+    private void validateInput(int decimalValue) {
+        if (decimalValue <= 0 || decimalValue >= 4000) {
+            throw new IllegalArgumentException("Invalid input: value must be between 1 and 3999.");
         }
+    }
+
+    private String convertToRoman(int decimalValue) {
+        String romanRepresentation = "";
+
+        while (decimalValue > 0) {
+            int romanValue = getRomanValue(decimalValue);
+            romanRepresentation += getRomanEquivalent(romanValue);
+            decimalValue -= romanValue;
+        }
+
+        return romanRepresentation;
+    }
+
+    private int getRomanValue(int decimalValue) {
+        if (decimalValue >= 1000)
+            return 1000;
+        if (decimalValue >= 900)
+            return 900;
+        if (decimalValue >= 500)
+            return 500;
+        if (decimalValue >= 400)
+            return 400;
+        if (decimalValue >= 100)
+            return 100;
+        if (decimalValue >= 90)
+            return 90;
+        if (decimalValue >= 50)
+            return 50;
+        if (decimalValue >= 40)
+            return 40;
+        if (decimalValue >= 10)
+            return 10;
+        if (decimalValue >= 9)
+            return 9;
+        if (decimalValue >= 5)
+            return 5;
+        if (decimalValue >= 4)
+            return 4;
+        return 1;
     }
 
     private String getRomanEquivalent(int decimalValue) {
@@ -86,11 +82,7 @@ public class RomanNumerals {
             case 1000:
                 return "M";
             default:
-                return "";
+                throw new IllegalArgumentException("No Roman equivalent for value: " + decimalValue);
         }
-    }
-
-    private boolean checkValidEntry(int decimalValue) {
-        return decimalValue > 0 && decimalValue < 4000;
     }
 }
